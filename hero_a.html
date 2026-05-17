@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ヒーロー案A</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@700&family=Noto+Sans+JP:wght@300&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body { background: #000; }
+
+    #hero {
+      width: 100vw;
+      height: 100vh;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* 写真エリア（実際の写真が入ったら bg-image に変更） */
+    .hero-photo {
+      position: absolute;
+      inset: 0;
+      /* ↓ 写真を入れるときはこちら
+      background-image: url('portrait.jpg');
+      background-size: cover;
+      background-position: center top; */
+
+      /* 写真の代わり：人物シルエットのプレースホルダー */
+      background: linear-gradient(170deg, #051020 0%, #0A2455 40%, #051020 100%);
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+    }
+
+    /* シルエット（写真入れたら削除） */
+    .placeholder-figure {
+      width: 320px;
+      height: 100%;
+      background: linear-gradient(to top, #0D2A5A 0%, #1A4A8A 60%, transparent 100%);
+      clip-path: polygon(30% 0%, 70% 0%, 85% 100%, 15% 100%);
+      opacity: 0.25;
+      flex-shrink: 0;
+    }
+
+    /* 青グラデーションオーバーレイ */
+    .hero-overlay {
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse at 50% 40%, rgba(0,80,255,0.18) 0%, transparent 65%),
+        linear-gradient(to bottom,
+          rgba(2,13,31,0.35) 0%,
+          rgba(2,13,31,0.15) 35%,
+          rgba(2,13,31,0.65) 75%,
+          rgba(2,13,31,0.90) 100%);
+    }
+
+    /* テキスト */
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0;
+    }
+
+    .hero-name {
+      font-family: 'Noto Serif JP', serif;
+      font-weight: 700;
+      font-size: clamp(3.5rem, 9vw, 7.5rem);
+      color: #fff;
+      letter-spacing: 0.15em;
+      line-height: 1;
+      text-shadow: 0 4px 40px rgba(0,80,255,0.35);
+      margin-bottom: 28px;
+    }
+
+    .hero-line {
+      width: 56px;
+      height: 2px;
+      background: #0050FF;
+      margin-bottom: 22px;
+    }
+
+    .hero-sub {
+      font-family: 'Noto Sans JP', sans-serif;
+      font-weight: 300;
+      font-size: clamp(0.7rem, 1.5vw, 0.85rem);
+      letter-spacing: 0.55em;
+      color: rgba(255,255,255,0.45);
+      text-transform: uppercase;
+    }
+
+    /* 左上にサイトタイトル小さく */
+    .hero-site-title {
+      position: absolute;
+      top: 28px;
+      left: 36px;
+      z-index: 3;
+      font-family: 'Noto Serif JP', serif;
+      font-size: 0.82rem;
+      letter-spacing: 0.2em;
+      color: rgba(255,255,255,0.55);
+    }
+
+    /* 下部スクロール示唆 */
+    .hero-scroll {
+      position: absolute;
+      bottom: 36px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 3;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .scroll-label {
+      font-size: 0.6rem;
+      letter-spacing: 0.4em;
+      color: rgba(255,255,255,0.3);
+      text-transform: uppercase;
+    }
+
+    .scroll-bar {
+      width: 1px;
+      height: 40px;
+      background: linear-gradient(to bottom, #0050FF, transparent);
+      animation: scrollbar 1.8s ease-in-out infinite;
+    }
+
+    @keyframes scrollbar {
+      0%   { opacity: 1; transform: scaleY(1); transform-origin: top; }
+      100% { opacity: 0; transform: scaleY(0.2); transform-origin: top; }
+    }
+  </style>
+</head>
+<body>
+
+<section id="hero">
+  <div class="hero-photo">
+    <div class="placeholder-figure"></div>
+  </div>
+  <div class="hero-overlay"></div>
+
+  <span class="hero-site-title">村田正純オフィシャルサイト</span>
+
+  <div class="hero-content">
+    <h1 class="hero-name">村田正純</h1>
+    <div class="hero-line"></div>
+    <p class="hero-sub">Murata Masazumi</p>
+  </div>
+
+  <div class="hero-scroll">
+    <span class="scroll-label">Scroll</span>
+    <div class="scroll-bar"></div>
+  </div>
+</section>
+
+</body>
+</html>
