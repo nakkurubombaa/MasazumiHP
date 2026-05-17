@@ -1,0 +1,783 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ヒーロー全20案｜村田正純</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;700&family=Noto+Sans+JP:wght@300;400;700&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body { background: #000; font-family: 'Noto Sans JP', sans-serif; }
+
+    /* ════════════════════════════
+       ナビゲーション
+    ════════════════════════════ */
+    .top-nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 999;
+      background: rgba(5,5,15,0.96); backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+      height: 52px; display: flex; align-items: center;
+      padding: 0 16px; gap: 0; overflow-x: auto;
+    }
+    .nav-group { display: flex; align-items: center; gap: 2px; padding: 0 8px; }
+    .nav-group-label {
+      font-size: 0.55rem; letter-spacing: 0.3em; padding: 3px 8px;
+      border-radius: 2px; margin-right: 4px; font-weight: 700; white-space: nowrap;
+    }
+    .nav-group-label.blue { background: #0050FF; color: #fff; }
+    .nav-group-label.green { background: #00B341; color: #fff; }
+    .top-nav a {
+      color: rgba(255,255,255,0.5); text-decoration: none;
+      font-size: 0.68rem; letter-spacing: 0.06em;
+      padding: 5px 8px; border-radius: 3px; white-space: nowrap; transition: all 0.18s;
+    }
+    .top-nav a:hover { color: #fff; background: rgba(255,255,255,0.1); }
+    .nav-sep { color: rgba(255,255,255,0.12); padding: 0 6px; font-size: 0.8rem; }
+
+    /* ════════════════════════════
+       セクション区切りヘッダー
+    ════════════════════════════ */
+    .theme-header {
+      width: 100%; height: 56px;
+      display: flex; align-items: center; justify-content: center; gap: 16px;
+    }
+    .theme-header .th-line { flex: 1; height: 1px; }
+    .theme-header .th-label {
+      font-size: 0.65rem; letter-spacing: 0.4em; text-transform: uppercase;
+      padding: 6px 20px; border-radius: 2px;
+    }
+    .theme-blue  { background: #000; }
+    .theme-blue .th-line { background: rgba(0,80,255,0.4); }
+    .theme-blue .th-label { background: #0050FF; color: #fff; }
+    .theme-green { background: #f7faf8; }
+    .theme-green .th-line { background: rgba(0,179,65,0.3); }
+    .theme-green .th-label { background: #00B341; color: #fff; }
+
+    /* ════════════════════════════
+       共通ヒーロー
+    ════════════════════════════ */
+    .hero {
+      width: 100vw; height: 100vh; min-height: 600px;
+      position: relative; overflow: hidden;
+    }
+    .name-ja { font-family: 'Noto Serif JP', serif; font-weight: 700; }
+    .name-en  { font-family: 'Noto Sans JP', sans-serif; font-weight: 300; }
+
+    /* ── 案ラベル（青） ── */
+    .plan-tag-blue {
+      position: absolute; top: 62px; left: 20px; z-index: 50;
+      font-size: 0.58rem; letter-spacing: 0.28em; color: rgba(255,255,255,0.7);
+      background: rgba(0,0,0,0.55); padding: 5px 14px;
+      border-left: 3px solid #0050FF; pointer-events: none;
+    }
+
+    /* ── 案ラベル（緑） ── */
+    .plan-tag-green {
+      position: absolute; top: 62px; left: 20px; z-index: 50;
+      font-size: 0.58rem; letter-spacing: 0.28em; color: #007A2E;
+      background: rgba(230,247,238,0.92); padding: 5px 14px;
+      border-left: 3px solid #00B341; pointer-events: none;
+    }
+
+    /* ── 写真エリア共通（青テーマ用） ── */
+    .photo-blue {
+      background: linear-gradient(160deg, #0A1830 0%, #172E5A 100%);
+      border: 2px dashed rgba(0,80,255,0.7);
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center; gap: 8px;
+    }
+    .photo-blue .ptag {
+      font-size: 0.65rem; letter-spacing: 0.12em; font-weight: 700;
+      color: #4488FF; background: rgba(0,0,0,0.6);
+      padding: 4px 12px; border: 1px dashed rgba(0,80,255,0.5);
+    }
+    .photo-blue .pnote {
+      font-size: 0.58rem; color: rgba(255,255,255,0.35); letter-spacing: 0.05em;
+    }
+
+    /* ── 写真エリア共通（緑テーマ用） ── */
+    .photo-green {
+      background: #E6F7EE;
+      border: 2px dashed #00B341;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center; gap: 8px;
+    }
+    .photo-green .ptag {
+      font-size: 0.65rem; letter-spacing: 0.12em; font-weight: 700;
+      color: #007A2E; background: #fff;
+      padding: 4px 12px; border: 1px dashed #00B341;
+    }
+    .photo-green .pnote {
+      font-size: 0.58rem; color: #5A7060; letter-spacing: 0.05em;
+    }
+
+    /* ── 全画面写真インジケーター（浮き） ── */
+    .photo-fullscreen-badge {
+      position: absolute; z-index: 30;
+      top: 50%; right: 28px; transform: translateY(-50%);
+      display: flex; flex-direction: column; align-items: flex-end; gap: 6px;
+      pointer-events: none;
+    }
+    .photo-fullscreen-badge .badge-label {
+      font-size: 0.62rem; letter-spacing: 0.1em; font-weight: 700;
+      padding: 6px 14px; border-radius: 2px;
+    }
+    .photo-fullscreen-badge .badge-note {
+      font-size: 0.56rem; letter-spacing: 0.06em; color: rgba(255,255,255,0.45);
+      background: rgba(0,0,0,0.5); padding: 4px 10px;
+    }
+    .badge-blue  { background: rgba(0,80,255,0.85); color: #fff; }
+    .badge-green { background: rgba(0,179,65,0.85); color: #fff; }
+
+    /* ════════════════════════════════════════
+       ── 青テーマ 案A〜J ──
+    ════════════════════════════════════════ */
+
+    /* 案A：名前中央 / 写真全面背景 */
+    #a {
+      background: linear-gradient(160deg,#020D1F 0%,#0A2560 50%,#020D1F 100%);
+      display: flex; align-items: center; justify-content: center;
+    }
+    #a .a-overlay {
+      position: absolute; inset: 0;
+      background: radial-gradient(ellipse at 50% 40%,rgba(0,80,255,0.18) 0%,transparent 65%),
+                  linear-gradient(to bottom,rgba(2,13,31,0.3) 0%,rgba(2,13,31,0.75) 100%);
+    }
+    #a .a-content {
+      position: relative; z-index: 2;
+      text-align: center; display: flex; flex-direction: column; align-items: center;
+    }
+    #a h1 {
+      font-size: clamp(3.5rem,9vw,7.5rem); color: #fff; letter-spacing: 0.15em;
+      text-shadow: 0 4px 40px rgba(0,80,255,0.4); margin-bottom: 26px;
+    }
+    #a .a-line { width: 52px; height: 2px; background: #0050FF; margin-bottom: 20px; }
+    #a .a-sub  { font-size: 0.78rem; letter-spacing: 0.55em; color: rgba(255,255,255,0.38); text-transform: uppercase; }
+    #a .a-scroll {
+      position: absolute; bottom: 36px; left: 50%; transform: translateX(-50%);
+      z-index: 3; display: flex; flex-direction: column; align-items: center; gap: 8px;
+    }
+    #a .a-scroll span { font-size: 0.58rem; letter-spacing: 0.4em; color: rgba(255,255,255,0.28); }
+    #a .a-scroll div  { width: 1px; height: 36px; background: linear-gradient(to bottom,#0050FF,transparent); animation: drop 1.8s ease infinite; }
+    @keyframes drop { 0%{opacity:1;transform:scaleY(1);transform-origin:top} 100%{opacity:0;transform:scaleY(0.1);transform-origin:top} }
+
+    /* 案B：左青パネル / 右写真 */
+    #b { display: flex; }
+    #b .b-panel {
+      width: 50%; background: #0050FF; z-index: 2;
+      display: flex; flex-direction: column; justify-content: flex-end; padding: 60px 56px;
+    }
+    #b h1 { font-size: clamp(2.8rem,5vw,4.5rem); color: #fff; letter-spacing: 0.12em; margin-bottom: 18px; }
+    #b .b-line { width: 44px; height: 2px; background: rgba(255,255,255,0.5); margin-bottom: 14px; }
+    #b .b-sub  { font-size: 0.72rem; letter-spacing: 0.4em; color: rgba(255,255,255,0.5); text-transform: uppercase; }
+    #b .b-label{ font-size: 0.6rem; letter-spacing: 0.45em; color: rgba(255,255,255,0.5); margin-bottom: 16px; text-transform: uppercase; }
+
+    /* 案C：斜めカット */
+    #c { display: flex; align-items: flex-end; }
+    #c .c-diag {
+      position: absolute; inset: 0;
+      background: #0050FF;
+      clip-path: polygon(0 0,52% 0,38% 100%,0 100%); z-index: 1;
+    }
+    #c .c-content { position: relative; z-index: 2; padding: 0 60px 80px; }
+    #c h1 { font-size: clamp(2.8rem,5.5vw,5rem); color: #fff; letter-spacing: 0.12em; margin-bottom: 16px; }
+    #c .c-line { width: 44px; height: 2px; background: #fff; margin-bottom: 14px; }
+    #c .c-sub  { font-size: 0.72rem; letter-spacing: 0.4em; color: rgba(255,255,255,0.5); text-transform: uppercase; }
+    #c .c-label{ font-size: 0.6rem; letter-spacing: 0.45em; color: rgba(255,255,255,0.55); margin-bottom: 14px; text-transform: uppercase; }
+
+    /* 案D：グレースケール写真 + 青のみ */
+    #d { background: #111; display: flex; align-items: center; justify-content: center; }
+    #d .d-overlay { position: absolute; inset: 0; background: rgba(0,0,0,0.55); }
+    #d .d-dot { position: absolute; top: 60px; right: 60px; width: 10px; height: 10px; border-radius: 50%; background: #0050FF; box-shadow: 0 0 20px rgba(0,80,255,0.8); z-index: 5; }
+    #d .d-content { position: relative; z-index: 2; text-align: center; display: flex; flex-direction: column; align-items: center; }
+    #d h1 { font-size: clamp(3rem,8vw,6.5rem); color: #fff; letter-spacing: 0.15em; margin-bottom: 20px; }
+    #d .d-line { width: 60px; height: 3px; background: #0050FF; margin-bottom: 20px; }
+    #d .d-sub  { font-size: 0.78rem; letter-spacing: 0.5em; color: rgba(255,255,255,0.38); text-transform: uppercase; }
+
+    /* 案E：写真左固定 / 右テキスト */
+    #e { display: flex; }
+    #e .e-right {
+      flex: 1; background: #020D1F;
+      display: flex; flex-direction: column; justify-content: center;
+      padding: 60px 56px; border-left: 4px solid #0050FF;
+    }
+    #e .e-label { font-size: 0.6rem; letter-spacing: 0.45em; color: #0050FF; margin-bottom: 20px; text-transform: uppercase; }
+    #e h1 { font-size: clamp(2.2rem,4vw,3.8rem); color: #fff; letter-spacing: 0.1em; margin-bottom: 20px; }
+    #e .e-line { width: 44px; height: 2px; background: #0050FF; margin-bottom: 16px; }
+    #e .e-sub  { font-size: 0.8rem; color: rgba(255,255,255,0.38); letter-spacing: 0.08em; }
+
+    /* 案F：映画ポスター型 */
+    #f { background: linear-gradient(180deg,#020D1F 0%,#051630 100%); display: flex; align-items: center; justify-content: center; }
+    #f .f-grid { position: absolute; inset: 0; background-image: linear-gradient(rgba(0,80,255,0.04) 1px,transparent 1px),linear-gradient(90deg,rgba(0,80,255,0.04) 1px,transparent 1px); background-size: 60px 60px; }
+    #f .f-wrap { position: relative; z-index: 2; display: flex; flex-direction: column; align-items: center; text-align: center; }
+    #f .f-roman { font-size: 0.62rem; letter-spacing: 0.7em; color: #0050FF; text-transform: uppercase; margin-bottom: 22px; }
+    #f h1 { font-size: clamp(2rem,5vw,3.8rem); color: #fff; letter-spacing: 0.22em; margin-bottom: 10px; }
+    #f .f-line { width: 40px; height: 1px; background: #0050FF; margin: 0 auto 12px; }
+    #f .f-tag  { font-size: 0.62rem; letter-spacing: 0.35em; color: rgba(255,255,255,0.3); text-transform: uppercase; }
+
+    /* 案G：文字が主役 / 写真は透かし */
+    #g { background: #020D1F; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+    #g .g-bigname {
+      position: absolute; font-family: 'Noto Serif JP',serif; font-weight: 700;
+      font-size: clamp(8rem,22vw,18rem); color: rgba(255,255,255,0.05);
+      white-space: nowrap; z-index: 1; letter-spacing: 0.05em;
+      top: 50%; transform: translateY(-50%);
+    }
+    #g .g-content { position: relative; z-index: 2; text-align: center; display: flex; flex-direction: column; align-items: center; }
+    #g .g-label  { font-size: 0.6rem; letter-spacing: 0.5em; color: #0050FF; text-transform: uppercase; margin-bottom: 16px; }
+    #g h1 { font-size: clamp(2.5rem,6.5vw,5.5rem); color: #fff; letter-spacing: 0.2em; margin-bottom: 20px; }
+    #g .g-line { width: 48px; height: 2px; background: #0050FF; }
+
+    /* 案H：上下2段分割 */
+    #h { display: flex; flex-direction: column; }
+    #h .h-bottom { height: 42%; background: #0050FF; display: flex; flex-direction: column; justify-content: center; padding: 0 60px; }
+    #h .h-label  { font-size: 0.6rem; letter-spacing: 0.45em; color: rgba(255,255,255,0.55); margin-bottom: 12px; text-transform: uppercase; }
+    #h h1 { font-size: clamp(2rem,4.5vw,4rem); color: #fff; letter-spacing: 0.12em; margin-bottom: 10px; }
+    #h .h-sub  { font-size: 0.75rem; letter-spacing: 0.45em; color: rgba(255,255,255,0.5); text-transform: uppercase; }
+
+    /* 案I：中央カード型 */
+    #i { background: #0050FF; display: flex; align-items: center; justify-content: center; }
+    #i .i-bg   { position: absolute; inset: 0; background-image: radial-gradient(rgba(255,255,255,0.06) 1px,transparent 1px); background-size: 28px 28px; }
+    #i .i-card { position: relative; z-index: 2; background: #fff; width: min(280px,40vw); box-shadow: 0 24px 80px rgba(0,0,0,0.35); display: flex; flex-direction: column; overflow: hidden; }
+    #i .i-body { padding: 22px 22px 26px; text-align: center; }
+    #i .i-clabel { font-size: 0.58rem; letter-spacing: 0.4em; color: #0050FF; text-transform: uppercase; margin-bottom: 8px; }
+    #i h1 { font-size: clamp(1.3rem,2.5vw,1.9rem); color: #020D1F; letter-spacing: 0.15em; margin-bottom: 10px; }
+    #i .i-cline { width: 30px; height: 2px; background: #0050FF; margin: 0 auto; }
+
+    /* 案J：テキストアニメーション型 */
+    #j { background: #020D1F; display: flex; align-items: center; overflow: hidden; }
+    #j .j-overlay { position: absolute; inset: 0; background: linear-gradient(to right,rgba(2,13,31,0.9) 0%,rgba(2,13,31,0.4) 100%); }
+    #j .j-content { position: relative; z-index: 2; padding: 0 64px; }
+    #j .j-label { font-size: 0.6rem; letter-spacing: 0.5em; color: #0050FF; text-transform: uppercase; margin-bottom: 18px; display: block; opacity: 0; animation: fadeup 0.7s ease forwards 0.2s; }
+    #j h1 { font-size: clamp(3rem,7vw,6rem); color: #fff; letter-spacing: 0.12em; margin-bottom: 22px; opacity: 0; animation: fadeup 0.7s ease forwards 0.5s; }
+    #j .j-line { width: 50px; height: 2px; background: #0050FF; margin-bottom: 18px; opacity: 0; animation: fadein2 0.5s ease forwards 0.9s; }
+    #j .j-sub  { font-size: 0.75rem; letter-spacing: 0.45em; color: rgba(255,255,255,0.38); text-transform: uppercase; opacity: 0; animation: fadeup 0.7s ease forwards 1.1s; }
+    @keyframes fadeup  { from{opacity:0;transform:translateY(18px)} to{opacity:1;transform:translateY(0)} }
+    @keyframes fadein2 { from{opacity:0} to{opacity:1} }
+
+    /* ════════════════════════════════════════
+       ── 緑テーマ 案K〜T ──
+    ════════════════════════════════════════ */
+    :root {
+      --g:  #00B341;
+      --gd: #007A2E;
+      --gp: #E6F7EE;
+      --gt: #0D2015;
+      --gs: #5A7060;
+    }
+
+    /* 案K：純白 + 名前大 + 写真右縦長 */
+    #k { background: #fff; display: flex; align-items: center; }
+    #k .k-left { flex: 1; padding: 0 80px; display: flex; flex-direction: column; justify-content: center; }
+    #k .k-label{ font-size: 0.62rem; letter-spacing: 0.5em; color: var(--g); text-transform: uppercase; margin-bottom: 20px; }
+    #k h1 { font-family: 'Noto Serif JP',serif; font-weight: 700; font-size: clamp(3rem,6vw,5.5rem); color: var(--gt); letter-spacing: 0.1em; line-height: 1; margin-bottom: 28px; }
+    #k .k-line { width: 52px; height: 3px; background: var(--g); margin-bottom: 22px; }
+    #k .k-sub  { font-size: 0.78rem; letter-spacing: 0.4em; color: var(--gs); text-transform: uppercase; }
+
+    /* 案L：左写真 / 右白テキスト */
+    #l { background: #fff; display: flex; }
+    #l .l-right { flex: 1; display: flex; flex-direction: column; justify-content: center; padding: 0 64px; }
+    #l .l-label{ font-size: 0.62rem; letter-spacing: 0.5em; color: var(--g); text-transform: uppercase; margin-bottom: 18px; }
+    #l h1 { font-family: 'Noto Serif JP',serif; font-weight: 700; font-size: clamp(2.4rem,4.5vw,4rem); color: var(--gt); letter-spacing: 0.1em; margin-bottom: 20px; }
+    #l .l-line { width: 48px; height: 2px; background: var(--g); margin-bottom: 18px; }
+    #l .l-sub  { font-size: 0.85rem; color: var(--gs); line-height: 2; }
+
+    /* 案M：白左（緑ボーダー） / 右写真 */
+    #m { background: #fff; display: flex; }
+    #m .m-left { flex: 1; border-right: 4px solid var(--g); display: flex; flex-direction: column; justify-content: center; padding: 0 64px; }
+    #m .m-label{ font-size: 0.62rem; letter-spacing: 0.5em; color: var(--g); text-transform: uppercase; margin-bottom: 18px; }
+    #m h1 { font-family: 'Noto Serif JP',serif; font-weight: 700; font-size: clamp(2.4rem,4.5vw,4rem); color: var(--gt); letter-spacing: 0.1em; margin-bottom: 22px; }
+    #m .m-line { width: 48px; height: 2px; background: var(--g); margin-bottom: 18px; }
+    #m .m-sub  { font-size: 0.78rem; letter-spacing: 0.4em; color: var(--gs); text-transform: uppercase; }
+
+    /* 案N：写真全面 + 下から白フェード */
+    #n { display: flex; flex-direction: column; justify-content: flex-end; }
+    #n .n-fade { position: absolute; inset: 0; z-index: 2; background: linear-gradient(to top,#fff 0%,#fff 22%,rgba(255,255,255,0.5) 52%,transparent 100%); }
+    #n .n-content { position: relative; z-index: 3; padding: 0 64px 72px; }
+    #n .n-label { font-size: 0.62rem; letter-spacing: 0.5em; color: var(--g); text-transform: uppercase; margin-bottom: 14px; }
+    #n h1 { font-family: 'Noto Serif JP',serif; font-weight: 700; font-size: clamp(2.8rem,5.5vw,5rem); color: var(--gt); letter-spacing: 0.1em; margin-bottom: 18px; }
+    #n .n-line { width: 48px; height: 2px; background: var(--g); }
+
+    /* 案O：写真上55% / 白下45% */
+    #o { display: flex; flex-direction: column; background: #fff; }
+    #o .o-bottom { height: 45%; background: #fff; display: flex; flex-direction: column; justify-content: center; padding: 0 64px; }
+    #o .o-label { font-size: 0.62rem; letter-spacing: 0.5em; color: var(--g); text-transform: uppercase; margin-bottom: 14px; }
+    #o h1 { font-family: 'Noto Serif JP',serif; font-weight: 700; font-size: clamp(2.2rem,4.5vw,4rem); color: var(--gt); letter-spacing: 0.1em; margin-bottom: 14px; }
+    #o .o-line { width: 48px; height: 2px; background: var(--g); margin-bottom: 12px; }
+    #o .o-sub  { font-size: 0.78rem; letter-spacing: 0.4em; color: var(--gs); text-transform: uppercase; }
+
+    /* 案P：白背景 + 写真傾き */
+    #p { background: var(--gp); display: flex; align-items: center; }
+    #p::before { content:''; position: absolute; inset: 0; background: #fff; clip-path: polygon(0 0,62% 0,55% 100%,0 100%); }
+    #p .p-left { position: relative; z-index: 2; width: 50%; padding: 0 72px; display: flex; flex-direction: column; justify-content: center; }
+    #p .p-label{ font-size: 0.62rem; letter-spacing: 0.5em; color: var(--g); text-transform: uppercase; margin-bottom: 18px; }
+    #p h1 { font-family: 'Noto Serif JP',serif; font-weight: 700; font-size: clamp(2.4rem,4.5vw,4rem); color: var(--gt); letter-spacing: 0.1em; margin-bottom: 20px; }
+    #p .p-line { width: 48px; height: 3px; background: var(--g); margin-bottom: 18px; }
+    #p .p-sub  { font-size: 0.78rem; letter-spacing: 0.4em; color: var(--gs); text-transform: uppercase; }
+    #p .p-wrap { position: relative; z-index: 2; width: 28%; aspect-ratio: 2/3; transform: rotate(2.5deg); box-shadow: 8px 16px 48px rgba(0,0,0,0.14); flex-shrink: 0; margin-right: 48px; overflow: hidden; }
+
+    /* 案Q：緑ストライプ上部 */
+    #q { background: #fff; display: flex; flex-direction: column; }
+    #q .q-stripe { height: 8px; background: var(--g); flex-shrink: 0; }
+    #q .q-body  { flex: 1; display: flex; align-items: center; justify-content: center; gap: 72px; padding: 0 60px; }
+    #q .q-text  {}
+    #q .q-label { font-size: 0.62rem; letter-spacing: 0.5em; color: var(--g); text-transform: uppercase; margin-bottom: 18px; }
+    #q h1 { font-family: 'Noto Serif JP',serif; font-weight: 700; font-size: clamp(2.4rem,4.5vw,4rem); color: var(--gt); letter-spacing: 0.1em; margin-bottom: 20px; }
+    #q .q-line { width: 48px; height: 2px; background: var(--g); margin-bottom: 18px; }
+    #q .q-sub  { font-size: 0.78rem; letter-spacing: 0.4em; color: var(--gs); text-transform: uppercase; }
+    #q .q-stripe-b { height: 4px; background: var(--gp); flex-shrink: 0; }
+
+    /* 案R：円形写真 */
+    #r { background: #fff; display: flex; align-items: center; justify-content: center; gap: 64px; padding: 0 60px; }
+    #r .r-circle { width: min(280px,35vw); aspect-ratio: 1/1; border-radius: 50%; overflow: hidden; flex-shrink: 0; }
+    #r .r-text {}
+    #r .r-label { font-size: 0.62rem; letter-spacing: 0.5em; color: var(--g); text-transform: uppercase; margin-bottom: 18px; }
+    #r h1 { font-family: 'Noto Serif JP',serif; font-weight: 700; font-size: clamp(2.8rem,5vw,4.5rem); color: var(--gt); letter-spacing: 0.1em; line-height: 1.1; margin-bottom: 22px; }
+    #r .r-line { width: 52px; height: 3px; background: var(--g); margin-bottom: 18px; }
+    #r .r-sub  { font-size: 0.78rem; letter-spacing: 0.4em; color: var(--gs); text-transform: uppercase; }
+
+    /* 案S：鮮やか緑背景 */
+    #s { background: var(--g); display: flex; align-items: center; }
+    #s .s-left { flex: 1; padding: 0 72px; display: flex; flex-direction: column; justify-content: center; }
+    #s .s-label{ font-size: 0.62rem; letter-spacing: 0.5em; color: rgba(255,255,255,0.65); text-transform: uppercase; margin-bottom: 18px; }
+    #s h1 { font-family: 'Noto Serif JP',serif; font-weight: 700; font-size: clamp(2.8rem,5.5vw,5rem); color: #fff; letter-spacing: 0.1em; margin-bottom: 22px; }
+    #s .s-line { width: 52px; height: 3px; background: rgba(255,255,255,0.5); margin-bottom: 18px; }
+    #s .s-sub  { font-size: 0.78rem; letter-spacing: 0.4em; color: rgba(255,255,255,0.55); text-transform: uppercase; }
+
+    /* 案T：写真薄い透かし + 名前中央 */
+    #t { background: #fff; display: flex; align-items: center; justify-content: center; }
+    #t .t-ghost   { position: absolute; inset: 0; background: var(--gp); opacity: 0.38; }
+    #t .t-overlay { position: absolute; inset: 0; background: rgba(255,255,255,0.72); }
+    #t .t-content { position: relative; z-index: 2; text-align: center; display: flex; flex-direction: column; align-items: center; }
+    #t .t-label { font-size: 0.62rem; letter-spacing: 0.5em; color: var(--g); text-transform: uppercase; margin-bottom: 20px; }
+    #t h1 { font-family: 'Noto Serif JP',serif; font-weight: 700; font-size: clamp(3.5rem,8.5vw,7rem); color: var(--gt); letter-spacing: 0.12em; line-height: 1; margin-bottom: 26px; }
+    #t .t-line { width: 56px; height: 3px; background: var(--g); margin-bottom: 20px; }
+    #t .t-sub  { font-size: 0.78rem; letter-spacing: 0.5em; color: var(--gs); text-transform: uppercase; }
+    #t .t-badge {
+      position: absolute; top: 62px; right: 20px; z-index: 30;
+      font-size: 0.6rem; letter-spacing: 0.08em; color: var(--gd);
+      background: var(--gp); padding: 6px 14px; border: 1px dashed var(--g);
+    }
+  </style>
+</head>
+<body>
+
+<!-- ════ ナビ ════ -->
+<nav class="top-nav">
+  <div class="nav-group">
+    <span class="nav-group-label blue">青テーマ</span>
+    <a href="#a">A｜中央</a>
+    <a href="#b">B｜左右</a>
+    <a href="#c">C｜斜め</a>
+    <a href="#d">D｜グレスケ</a>
+    <a href="#e">E｜写真左</a>
+    <a href="#f">F｜ポスター</a>
+    <a href="#g">G｜文字主役</a>
+    <a href="#h">H｜上下</a>
+    <a href="#i">I｜カード</a>
+    <a href="#j">J｜アニメ</a>
+  </div>
+  <span class="nav-sep">｜</span>
+  <div class="nav-group">
+    <span class="nav-group-label green">緑テーマ</span>
+    <a href="#k">K｜白+名前大</a>
+    <a href="#l">L｜左写真</a>
+    <a href="#m">M｜緑ボーダー</a>
+    <a href="#n">N｜写真全面</a>
+    <a href="#o">O｜上下</a>
+    <a href="#p">P｜傾き</a>
+    <a href="#q">Q｜ストライプ</a>
+    <a href="#r">R｜円形</a>
+    <a href="#s">S｜緑背景</a>
+    <a href="#t">T｜透かし</a>
+  </div>
+</nav>
+
+<!-- ════ 青テーマ ヘッダー ════ -->
+<div class="theme-header theme-blue" style="margin-top:52px;">
+  <div class="th-line"></div>
+  <span class="th-label">青テーマ ── 案A〜J（ダーク・スタイリッシュ）</span>
+  <div class="th-line"></div>
+</div>
+
+
+<!-- ══ 案A：名前中央 / 写真全面背景 ══ -->
+<section class="hero" id="a">
+  <!-- 写真はここ全体に入ります →
+       #a に background-image:url('portrait.jpg'); background-size:cover; を追加 -->
+  <div class="a-overlay"></div>
+  <div class="plan-tag-blue">案A｜名前中央 / 写真全面背景</div>
+
+  <!-- 写真エリアの表示 -->
+  <div class="photo-fullscreen-badge">
+    <span class="badge-label badge-blue">★ 写真エリア（全画面）</span>
+    <span class="badge-note">portrait.jpg → #a に background-image で追加</span>
+  </div>
+
+  <div class="a-content">
+    <h1 class="name-ja">村田正純</h1>
+    <div class="a-line"></div>
+    <p class="name-en a-sub">Murata Masazumi</p>
+  </div>
+  <div class="a-scroll">
+    <span>SCROLL</span>
+    <div></div>
+  </div>
+</section>
+
+
+<!-- ══ 案B：左青パネル / 右写真 ══ -->
+<section class="hero" id="b" style="display:flex;">
+  <div class="plan-tag-blue">案B｜左青パネル / 右に写真</div>
+  <div class="b-panel">
+    <p class="name-en b-label">Official Site</p>
+    <h1 class="name-ja">村田正純</h1>
+    <div class="b-line"></div>
+    <p class="name-en b-sub">Murata Masazumi</p>
+  </div>
+  <!-- 右半分が写真エリア -->
+  <div class="photo-blue" style="width:50%;height:100%;border:none;border-left:2px dashed rgba(0,80,255,0.7);">
+    <span class="ptag">★ 右半分に写真が入ります</span>
+    <span class="pnote">portrait.jpg → background-image で差し替え</span>
+  </div>
+</section>
+
+
+<!-- ══ 案C：斜めカット（青 / 写真） ══ -->
+<section class="hero" id="c">
+  <!-- 写真は section#c の background-image として全面に入ります -->
+  <div class="plan-tag-blue">案C｜斜めカット（左青パネル / 右に写真）</div>
+  <div class="photo-fullscreen-badge" style="right:auto;left:55%;transform:translateY(-50%);">
+    <span class="badge-label badge-blue">★ 右側エリアに写真</span>
+    <span class="badge-note">portrait.jpg → #c に background-image で追加</span>
+  </div>
+  <div class="c-diag"></div>
+  <div class="c-content">
+    <p class="name-en c-label">Official Site</p>
+    <h1 class="name-ja">村田正純</h1>
+    <div class="c-line"></div>
+    <p class="name-en c-sub">Murata Masazumi</p>
+  </div>
+</section>
+
+
+<!-- ══ 案D：グレースケール写真 + 青のみ ══ -->
+<section class="hero" id="d">
+  <!-- 写真は全画面・グレースケールで入ります -->
+  <div style="position:absolute;inset:0;background:linear-gradient(160deg,#1a1a1a 0%,#2e2e2e 50%,#1a1a1a 100%);"></div>
+  <div class="d-overlay"></div>
+  <div class="plan-tag-blue">案D｜グレースケール写真 + 青のみ鮮やか</div>
+
+  <div class="photo-fullscreen-badge">
+    <span class="badge-label badge-blue">★ 写真エリア（全画面・白黒）</span>
+    <span class="badge-note">portrait.jpg → filter:grayscale(100%) で白黒に</span>
+  </div>
+
+  <div class="d-dot"></div>
+  <div class="d-content">
+    <h1 class="name-ja">村田正純</h1>
+    <div class="d-line"></div>
+    <p class="name-en d-sub">Murata Masazumi</p>
+  </div>
+</section>
+
+
+<!-- ══ 案E：写真左固定 / 右テキスト ══ -->
+<section class="hero" id="e" style="display:flex;">
+  <div class="plan-tag-blue">案E｜写真左（画面の半分） / 右テキスト</div>
+  <!-- 左48%が写真エリア -->
+  <div class="photo-blue" style="width:48%;height:100%;border:none;border-right:2px dashed rgba(0,80,255,0.7);flex-shrink:0;">
+    <span class="ptag">★ 左半分に写真が入ります</span>
+    <span class="pnote">portrait.jpg → background-image で差し替え</span>
+  </div>
+  <div class="e-right">
+    <p class="name-en e-label">Official Site</p>
+    <h1 class="name-ja">村田正純</h1>
+    <div class="e-line"></div>
+    <p class="name-en e-sub">俳優 ／ Actor</p>
+  </div>
+</section>
+
+
+<!-- ══ 案F：映画ポスター型 ══ -->
+<section class="hero" id="f">
+  <div class="f-grid"></div>
+  <div class="plan-tag-blue">案F｜映画ポスター型（中央縦長に写真）</div>
+  <div class="f-wrap" style="position:relative;z-index:2;display:flex;flex-direction:column;align-items:center;text-align:center;">
+    <p class="name-en f-roman">Murata Masazumi</p>
+    <!-- 中央縦長が写真エリア -->
+    <div class="photo-blue" style="width:min(260px,38vw);aspect-ratio:2/3;margin-bottom:26px;border:2px dashed rgba(0,80,255,0.7);">
+      <span class="ptag" style="font-size:0.6rem;">★ 中央に縦長写真</span>
+      <span class="pnote">portrait.jpg → background-image で差し替え</span>
+    </div>
+    <h1 class="name-ja">村田正純</h1>
+    <div class="f-line"></div>
+    <p class="name-en f-tag">Official Site</p>
+  </div>
+</section>
+
+
+<!-- ══ 案G：文字が主役 / 写真は透かし ══ -->
+<section class="hero" id="g">
+  <!-- 写真は全画面・opacity 0.12 で薄く入ります -->
+  <div style="position:absolute;inset:0;background:linear-gradient(160deg,#0A1830 0%,#1A3A6E 100%);opacity:0.12;"></div>
+  <div class="plan-tag-blue">案G｜文字が主役 / 写真は全画面に薄く透かし</div>
+
+  <div class="photo-fullscreen-badge">
+    <span class="badge-label badge-blue">★ 写真（全画面・薄い透かし）</span>
+    <span class="badge-note">portrait.jpg → opacity:0.12 で薄く表示</span>
+  </div>
+
+  <div class="g-bigname">村田正純</div>
+  <div class="g-content">
+    <p class="name-en g-label">Official Site</p>
+    <h1 class="name-ja">村田正純</h1>
+    <div class="g-line"></div>
+  </div>
+</section>
+
+
+<!-- ══ 案H：上下2段分割 ══ -->
+<section class="hero" id="h" style="display:flex;flex-direction:column;">
+  <div class="plan-tag-blue">案H｜上58%に写真 / 下42%に青パネル＋名前</div>
+  <!-- 上58%が写真エリア -->
+  <div class="photo-blue" style="height:58%;border:none;border-bottom:2px dashed rgba(0,80,255,0.7);">
+    <span class="ptag">★ 上半分（58%）に写真が入ります</span>
+    <span class="pnote">portrait.jpg → background-image で差し替え</span>
+  </div>
+  <div class="h-bottom">
+    <p class="name-en h-label">Official Site</p>
+    <h1 class="name-ja">村田正純</h1>
+    <p class="name-en h-sub">Murata Masazumi</p>
+  </div>
+</section>
+
+
+<!-- ══ 案I：中央カード型 ══ -->
+<section class="hero" id="i">
+  <div class="i-bg"></div>
+  <div class="plan-tag-blue" style="border-left-color:#fff;">案I｜中央カード型（カード内の上部に写真）</div>
+  <div class="i-card">
+    <!-- カード内の上部が写真エリア -->
+    <div class="photo-blue" style="width:100%;aspect-ratio:3/4;border:none;border-bottom:2px dashed rgba(0,80,255,0.5);">
+      <span class="ptag" style="font-size:0.6rem;">★ カード上部に写真</span>
+      <span class="pnote">portrait.jpg → background-image で差し替え</span>
+    </div>
+    <div class="i-body">
+      <p class="name-en i-clabel">Official Site</p>
+      <h1 class="name-ja">村田正純</h1>
+      <div class="i-cline"></div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ══ 案J：テキストアニメーション型 ══ -->
+<section class="hero" id="j">
+  <!-- 写真は全画面・アニメーションでスライドインして入ります -->
+  <div style="position:absolute;inset:0;background:linear-gradient(160deg,#0A1830 0%,#1A3A6E 100%);opacity:0;animation:slidein2 1.2s ease forwards 0.8s;"></div>
+  @keyframes slidein2 { from{opacity:0;transform:scale(1.04)} to{opacity:1;transform:scale(1)} }
+  <div class="j-overlay"></div>
+  <div class="plan-tag-blue">案J｜アニメーション型（写真が背景にスライドイン）</div>
+
+  <div class="photo-fullscreen-badge">
+    <span class="badge-label badge-blue">★ 写真（全画面・アニメで登場）</span>
+    <span class="badge-note">portrait.jpg → 0.8秒後にフェードイン</span>
+  </div>
+
+  <div class="j-content">
+    <span class="name-en j-label">Official Site</span>
+    <h1 class="name-ja">村田正純</h1>
+    <div class="j-line"></div>
+    <p class="name-en j-sub">Murata Masazumi</p>
+  </div>
+</section>
+
+
+<!-- ════ 緑テーマ ヘッダー ════ -->
+<div class="theme-header theme-green">
+  <div class="th-line"></div>
+  <span class="th-label">緑テーマ ── 案K〜T（明るい・白ベース）</span>
+  <div class="th-line"></div>
+</div>
+
+
+<!-- ══ 案K：純白 + 名前大 + 写真右縦長 ══ -->
+<section class="hero" id="k">
+  <div class="plan-tag-green">案K｜純白 + 名前大 + 右縦長に写真</div>
+  <div class="k-left">
+    <p class="k-label">Official Site</p>
+    <h1>村田正純</h1>
+    <div class="k-line"></div>
+    <p class="k-sub">Murata Masazumi</p>
+  </div>
+  <!-- 右38%が写真エリア -->
+  <div class="photo-green" style="width:38%;height:100%;flex-shrink:0;border:none;border-left:2px dashed #00B341;">
+    <span class="ptag">★ 右縦長エリアに写真</span>
+    <span class="pnote">portrait.jpg → background-image で差し替え</span>
+  </div>
+</section>
+
+
+<!-- ══ 案L：左写真 / 右白テキスト ══ -->
+<section class="hero" id="l" style="display:flex;">
+  <div class="plan-tag-green">案L｜左半分に写真 / 右に白テキストパネル</div>
+  <!-- 左50%が写真エリア -->
+  <div class="photo-green" style="width:50%;height:100%;border:none;border-right:2px dashed #00B341;flex-shrink:0;">
+    <span class="ptag">★ 左半分に写真が入ります</span>
+    <span class="pnote">portrait.jpg → background-image で差し替え</span>
+  </div>
+  <div class="l-right">
+    <p class="l-label">Official Site</p>
+    <h1>村田正純</h1>
+    <div class="l-line"></div>
+    <p class="l-sub">俳優</p>
+  </div>
+</section>
+
+
+<!-- ══ 案M：白左（緑ボーダー） / 右写真 ══ -->
+<section class="hero" id="m" style="display:flex;">
+  <div class="plan-tag-green">案M｜左白（緑の縦ボーダー） / 右半分に写真</div>
+  <div class="m-left">
+    <p class="m-label">Official Site</p>
+    <h1>村田正純</h1>
+    <div class="m-line"></div>
+    <p class="m-sub">Murata Masazumi</p>
+  </div>
+  <!-- 右50%が写真エリア -->
+  <div class="photo-green" style="width:50%;height:100%;border:none;border-left:2px dashed #00B341;flex-shrink:0;">
+    <span class="ptag">★ 右半分に写真が入ります</span>
+    <span class="pnote">portrait.jpg → background-image で差し替え</span>
+  </div>
+</section>
+
+
+<!-- ══ 案N：写真全面 + 下から白フェード ══ -->
+<section class="hero" id="n">
+  <!-- 写真は全画面に入り、下から白くフェードします -->
+  <div class="photo-green" style="position:absolute;inset:0;border:2px dashed #00B341;">
+    <span class="ptag">★ 写真（全画面）</span>
+    <span class="pnote">portrait.jpg → background-image で差し替え / 下から白にフェード</span>
+  </div>
+  <div class="n-fade"></div>
+  <div class="plan-tag-green">案N｜写真全面 + 下から白くフェード</div>
+  <div class="n-content">
+    <p class="n-label">Official Site</p>
+    <h1>村田正純</h1>
+    <div class="n-line"></div>
+  </div>
+</section>
+
+
+<!-- ══ 案O：写真上55% / 白下45% ══ -->
+<section class="hero" id="o" style="display:flex;flex-direction:column;">
+  <div class="plan-tag-green">案O｜上55%に写真 / 下45%が白＋名前</div>
+  <!-- 上55%が写真エリア -->
+  <div class="photo-green" style="height:55%;border:none;border-bottom:2px dashed #00B341;">
+    <span class="ptag">★ 上半分（55%）に写真が入ります</span>
+    <span class="pnote">portrait.jpg → background-image で差し替え</span>
+  </div>
+  <div class="o-bottom">
+    <p class="o-label">Official Site</p>
+    <h1>村田正純</h1>
+    <div class="o-line"></div>
+    <p class="o-sub">Murata Masazumi</p>
+  </div>
+</section>
+
+
+<!-- ══ 案P：白背景 + 写真を少し傾けて配置 ══ -->
+<section class="hero" id="p">
+  <div class="plan-tag-green">案P｜白背景 + 写真を少し傾けて右に配置</div>
+  <div class="p-left">
+    <p class="p-label">Official Site</p>
+    <h1>村田正純</h1>
+    <div class="p-line"></div>
+    <p class="p-sub">Murata Masazumi</p>
+  </div>
+  <!-- 傾いた写真エリア -->
+  <div class="p-wrap">
+    <div class="photo-green" style="width:100%;height:100%;border:2px dashed #00B341;">
+      <span class="ptag" style="font-size:0.6rem;">★ 写真（傾いて配置）</span>
+      <span class="pnote">portrait.jpg</span>
+    </div>
+  </div>
+</section>
+
+
+<!-- ══ 案Q：緑ストライプ上部 + 写真&テキスト横並び ══ -->
+<section class="hero" id="q">
+  <div class="plan-tag-green">案Q｜緑ストライプ上部 + 写真＆テキスト横並び</div>
+  <div class="q-stripe"></div>
+  <div class="q-body">
+    <!-- 左が写真エリア（縦長） -->
+    <div class="photo-green" style="width:28%;aspect-ratio:2/3;flex-shrink:0;">
+      <span class="ptag" style="font-size:0.6rem;">★ 写真</span>
+      <span class="pnote">portrait.jpg</span>
+    </div>
+    <div class="q-text">
+      <p class="q-label">Official Site</p>
+      <h1>村田正純</h1>
+      <div class="q-line"></div>
+      <p class="q-sub">Murata Masazumi</p>
+    </div>
+  </div>
+  <div class="q-stripe-b"></div>
+</section>
+
+
+<!-- ══ 案R：円形写真 + 名前横に大きく ══ -->
+<section class="hero" id="r">
+  <div class="plan-tag-green">案R｜写真を円形にクロップ + 名前を横に大きく</div>
+  <!-- 円形写真エリア -->
+  <div class="r-circle">
+    <div class="photo-green" style="width:100%;height:100%;border:2px dashed #00B341;border-radius:50%;">
+      <span class="ptag" style="font-size:0.58rem;text-align:center;">★ 写真（円形）</span>
+      <span class="pnote">portrait.jpg</span>
+    </div>
+  </div>
+  <div class="r-text">
+    <p class="r-label">Official Site</p>
+    <h1>村田正純</h1>
+    <div class="r-line"></div>
+    <p class="r-sub">Murata Masazumi</p>
+  </div>
+</section>
+
+
+<!-- ══ 案S：鮮やか緑背景 + 白テキスト + 右写真 ══ -->
+<section class="hero" id="s">
+  <div class="plan-tag-green" style="background:rgba(0,100,40,0.7);color:#fff;border-left-color:rgba(255,255,255,0.7);">案S｜鮮やか緑背景 + 右半分に写真</div>
+  <div class="s-left">
+    <p class="s-label">Official Site</p>
+    <h1>村田正純</h1>
+    <div class="s-line"></div>
+    <p class="s-sub">Murata Masazumi</p>
+  </div>
+  <!-- 右42%が写真エリア -->
+  <div style="width:42%;height:100%;flex-shrink:0;background:rgba(255,255,255,0.12);border-left:2px dashed rgba(255,255,255,0.5);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;">
+    <span style="font-size:0.65rem;letter-spacing:0.12em;font-weight:700;color:#fff;background:rgba(0,100,40,0.6);padding:4px 12px;border:1px dashed rgba(255,255,255,0.5);">★ 右半分に写真が入ります</span>
+    <span style="font-size:0.58rem;color:rgba(255,255,255,0.55);">portrait.jpg → background-image で差し替え</span>
+  </div>
+</section>
+
+
+<!-- ══ 案T：写真薄い透かし + 名前中央（白・明るい） ══ -->
+<section class="hero" id="t">
+  <!-- 写真は全画面・薄い透かしで入ります -->
+  <div class="t-ghost"></div>
+  <div class="t-overlay"></div>
+  <div class="plan-tag-green">案T｜写真を白い透かし + 名前が中央に大きく</div>
+  <div class="t-badge">★ 写真（全画面・薄い透かし）｜portrait.jpg → opacity:0.38 で表示</div>
+  <div class="t-content">
+    <p class="t-label">Official Site</p>
+    <h1>村田正純</h1>
+    <div class="t-line"></div>
+    <p class="t-sub">Murata Masazumi</p>
+  </div>
+</section>
+
+</body>
+</html>
