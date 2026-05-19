@@ -1,0 +1,784 @@
+/* ==========================================
+   VARIABLES & RESET
+========================================== */
+:root {
+  --green:      #0D9B6E;   /* ジェイドグリーン（セクションアクセント） */
+  --green-dark: #5A8B3A;   /* DIC 36（ヒーローパネル・濃い緑） */
+  --blue:     #88B0CC;   /* DIC 138 */
+  --dark:     #1C1C1C;
+  --text:     #333333;
+  --muted:    #888888;
+  --bg:       #FAFAF8;
+  --bg-alt:   #F2F2EF;
+  --border:   #E0E0DB;
+  --white:    #FFFFFF;
+
+  --serif:  'Noto Serif JP', 'Times New Roman', serif;
+  --sans:   'Noto Sans JP', 'Hiragino Sans', sans-serif;
+  --en:     'Cormorant Garamond', Georgia, serif;
+
+  --max:    920px;
+  --sec-py: 96px;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; font-size: 16px; }
+
+body {
+  font-family: var(--sans);
+  color: var(--text);
+  background: var(--bg);
+  line-height: 1.8;
+  -webkit-font-smoothing: antialiased;
+}
+
+img { max-width: 100%; height: auto; display: block; }
+a   { color: inherit; text-decoration: none; }
+ul  { list-style: none; }
+
+/* ==========================================
+   NAVIGATION — 常に白背景・黒テキスト
+========================================== */
+.nav {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%;
+  z-index: 900;
+  padding: 0 40px;
+  background: #1A3614;
+}
+
+.nav-inner {
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.nav-logo {
+  font-family: var(--en);
+  font-size: 0.82rem;
+  font-weight: 400;
+  letter-spacing: 0.22em;
+  color: rgba(255,255,255,0.85);
+}
+
+.nav-menu ul {
+  display: flex;
+  gap: 32px;
+}
+
+.nav-menu a {
+  font-family: var(--sans);
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  color: rgba(255,255,255,0.8);
+  transition: color 0.2s;
+  position: relative;
+}
+
+/* ホバーで白のアンダーライン */
+.nav-menu a::after {
+  content: '';
+  position: absolute;
+  bottom: -3px; left: 0; right: 0;
+  height: 1px;
+  background: rgba(255,255,255,0.7);
+  transform: scaleX(0);
+  transition: transform 0.2s;
+}
+
+.nav-menu a:hover { color: #fff; }
+.nav-menu a:hover::after { transform: scaleX(1); }
+
+/* SNS icons in nav */
+.nav-sns {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.nav-sns-link {
+  display: flex;
+  align-items: center;
+  color: rgba(255,255,255,0.7);
+  transition: color 0.2s;
+}
+
+.nav-sns-link:hover {
+  color: #fff;
+}
+
+/* hamburger */
+.hamburger {
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 6px 4px;
+}
+
+.hamburger span {
+  display: block;
+  width: 22px;
+  height: 1.5px;
+  background: rgba(255,255,255,0.85);
+  transition: transform 0.3s, opacity 0.3s;
+}
+
+.hamburger.is-open span:nth-child(1) { transform: translateY(6px) rotate(45deg); }
+.hamburger.is-open span:nth-child(2) { opacity: 0; }
+.hamburger.is-open span:nth-child(3) { transform: translateY(-6px) rotate(-45deg); }
+
+/* ==========================================
+   HERO — 左1/3（3色）+ 右2/3（写真）
+   ナビ        : 濃い緑  #1A3614
+   帯（俳優）  : モスグリーン #6A7B40
+   名前エリア  : ジェイドグリーン #0D9B6E
+   文字        : 純白 #FFFFFF
+========================================== */
+
+.hero {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  height: 100svh;
+  min-height: 580px;
+  overflow: hidden;
+}
+
+/* 左テキスト列 全体 */
+.hero-text-side {
+  display: flex;
+  flex-direction: column;
+  /* 縦線（右端）：写真との区切り */
+  border-right: 1px solid rgba(255,255,255,0.18);
+  position: relative;
+}
+
+/* ─── 名前エリア ─── */
+.hero-name-body {
+  background: var(--green);
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 44px 40px;
+  position: relative;
+}
+
+.hero-label {
+  display: block;
+  font-family: var(--sans);
+  font-size: 1rem;
+  font-weight: 300;
+  letter-spacing: 0.55em;
+  color: rgba(255,255,255,0.85);
+  margin-bottom: 18px;
+}
+
+/* 名前と横線をセットでまとめるラッパー */
+.hero-name-wrap {
+  display: inline-flex;
+  flex-direction: column;
+}
+
+.hero-name-ja {
+  display: block;
+  font-family: var(--serif);
+  font-size: clamp(2.4rem, 4.2vw, 4.2rem);
+  font-weight: 400;
+  letter-spacing: 0.22em;
+  color: #FFFFFF;
+  white-space: nowrap;
+  line-height: 1.05;
+}
+
+/* 名前の幅に合わせた横ライン */
+.hero-accent-line {
+  width: 100%;
+  height: 3px;
+  background: #1A3614;
+  margin-top: 20px;
+}
+
+/* 右：写真 */
+.hero-photo-side {
+  overflow: hidden;
+  position: relative;
+}
+
+
+.hero-photo-side img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 28%;
+  transform: scale(1.25);
+  transform-origin: center 28%;
+}
+
+/* スクロール線：非表示 */
+.scroll-down { display: none; }
+.scroll-line  { display: none; }
+
+/* モバイル：写真が上、テキストが下 */
+@media (max-width: 768px) {
+  .hero {
+    grid-template-columns: 1fr;
+    grid-template-rows: 2fr 1fr;
+  }
+
+  .hero-photo-side { order: -1; }
+
+  .hero-text-side  { border-right: none; }
+
+  .hero-name-body { padding: 24px 28px; }
+
+  .hero-name-ja {
+    font-size: clamp(2rem, 8vw, 3rem);
+    white-space: nowrap;
+  }
+
+  .hero-accent-line { margin-top: 16px; }
+  .scroll-down { display: none; }
+}
+
+/* ==========================================
+   SECTIONS — SHARED
+========================================== */
+.section    { padding: var(--sec-py) 24px; }
+.section-alt { background: var(--bg-alt); }
+
+.container {
+  max-width: var(--max);
+  margin: 0 auto;
+}
+
+.section-ttl {
+  font-family: var(--serif);
+  font-size: clamp(1.3rem, 3.5vw, 1.8rem);
+  font-weight: 400;
+  letter-spacing: 0.18em;
+  color: var(--green);          /* 緑色の見出し */
+  margin-bottom: 52px;
+  padding-left: 16px;
+  border-left: 4px solid var(--green);  /* 左に太い緑ライン */
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+
+.section-ttl::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--green);
+  opacity: 0.25;
+}
+
+/* ==========================================
+   PROFILE
+========================================== */
+.profile-wrap {
+  display: grid;
+  grid-template-columns: 3fr 2fr;
+  gap: 64px;
+  align-items: start;
+}
+
+.profile-bio {
+  font-size: 0.88rem;
+  line-height: 2.1;
+  color: var(--text);
+}
+
+.profile-spec table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.profile-spec th,
+.profile-spec td {
+  padding: 10px 0;
+  border-bottom: 1px solid var(--border);
+  font-size: 0.82rem;
+  text-align: left;
+  vertical-align: top;
+}
+
+.profile-spec th {
+  color: var(--muted);
+  font-weight: 300;
+  width: 42%;
+  padding-right: 12px;
+}
+
+.profile-spec td {
+  color: var(--dark);
+  font-weight: 400;
+}
+
+/* ==========================================
+   CAREER — TABS
+========================================== */
+.tab-nav {
+  display: flex;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 48px;
+}
+
+.tab-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 12px 36px;
+  font-family: var(--serif);
+  font-size: 0.88rem;
+  letter-spacing: 0.12em;
+  color: var(--muted);
+  position: relative;
+  transition: color 0.2s;
+}
+
+.tab-btn::after {
+  content: '';
+  position: absolute;
+  bottom: -1px;
+  left: 0; right: 0;
+  height: 2px;
+  background: var(--green);
+  transform: scaleX(0);
+  transition: transform 0.28s ease;
+}
+
+.tab-btn.is-active        { color: var(--dark); }
+.tab-btn.is-active::after { transform: scaleX(1); }
+
+.tab-pane           { display: none; }
+.tab-pane.is-active { display: block; }
+
+/* Year groups */
+.year-group { margin-bottom: 44px; }
+
+.year-head {
+  font-family: var(--en);
+  font-size: 1.35rem;
+  font-weight: 300;
+  color: var(--green);
+  letter-spacing: 0.12em;
+  margin-bottom: 14px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid rgba(90,139,58,0.18);
+}
+
+.work-list {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding-top: 6px;
+}
+
+.work-list li {
+  padding-left: 14px;
+  border-left: 2px solid var(--border);
+  transition: border-color 0.2s;
+}
+
+.work-list li:hover { border-left-color: var(--green); }
+
+.work-name {
+  font-size: 0.88rem;
+  font-weight: 500;
+  color: var(--dark);
+  line-height: 1.55;
+}
+
+.work-info {
+  font-size: 0.76rem;
+  color: var(--muted);
+  margin-top: 3px;
+  line-height: 1.65;
+}
+
+/* Video tab */
+.video-cats {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 40px 56px;
+}
+
+.video-cat-title {
+  font-family: var(--en);
+  font-size: 1.1rem;
+  font-weight: 300;
+  letter-spacing: 0.22em;
+  color: var(--dark);
+  padding-bottom: 8px;
+  margin-bottom: 14px;
+  border-bottom: 1px solid var(--blue);
+}
+
+.coming-soon {
+  font-size: 0.78rem;
+  color: var(--muted);
+  font-style: italic;
+}
+
+/* ==========================================
+   GALLERY
+========================================== */
+.gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 6px;
+}
+
+.gallery-item {
+  aspect-ratio: 3 / 4;
+  overflow: hidden;
+  background: var(--bg-alt);
+}
+
+.gallery-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.55s ease, opacity 0.3s;
+}
+
+.gallery-item img {
+  cursor: zoom-in;
+}
+
+.gallery-item:hover img {
+  transform: scale(1.06);
+  opacity: 0.88;
+}
+
+/* 人物を拡大表示（3・4番） */
+.gallery-item--zoom img {
+  object-position: center 25%;
+  transform: scale(1.22);
+  transform-origin: center 25%;
+}
+
+.gallery-item--zoom:hover img {
+  transform: scale(1.28);
+  transform-origin: center 25%;
+  opacity: 0.88;
+}
+
+/* gallery-06：被写体が右寄り → 右にシフトして中央へ */
+.gallery-item--g06 img {
+  object-position: 72% 25%;
+}
+
+/* gallery-08：被写体が左寄り → 左にシフトして中央へ */
+.gallery-item--g08 img {
+  object-position: 32% 35%;
+}
+
+/* ==========================================
+   LIGHTBOX
+========================================== */
+.lightbox {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.92);
+  z-index: 1000;
+  align-items: center;
+  justify-content: center;
+  cursor: zoom-out;
+}
+
+.lightbox.is-open {
+  display: flex;
+}
+
+.lightbox-img {
+  max-width: 90vw;
+  max-height: 90vh;
+  object-fit: contain;
+  cursor: default;
+  border-radius: 2px;
+  box-shadow: 0 8px 40px rgba(0, 0, 0, 0.6);
+}
+
+.lightbox-close {
+  position: absolute;
+  top: 20px;
+  right: 28px;
+  background: none;
+  border: none;
+  color: rgba(255, 255, 255, 0.75);
+  font-size: 2.4rem;
+  line-height: 1;
+  cursor: pointer;
+  padding: 6px 10px;
+  transition: color 0.2s;
+}
+
+.lightbox-close:hover {
+  color: #fff;
+}
+
+/* ==========================================
+   SNS
+========================================== */
+.sns-list {
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.sns-link {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding: 18px 28px;
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  min-width: 260px;
+  flex: 1;
+}
+
+.sns-link:hover {
+  border-color: var(--green);
+  box-shadow: 0 2px 10px rgba(90,139,58,0.1);
+}
+
+.sns-icon {
+  font-size: 1.1rem;
+  width: 28px;
+  text-align: center;
+  color: var(--dark);
+}
+
+.sns-name {
+  flex: 1;
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--dark);
+}
+
+.sns-handle {
+  font-size: 0.76rem;
+  color: var(--muted);
+}
+
+/* ==========================================
+   TRAINING
+========================================== */
+.training-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.training-list li {
+  display: flex;
+  align-items: baseline;
+  gap: 40px;
+  padding: 20px 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.training-year {
+  font-family: var(--en);
+  font-size: 0.88rem;
+  font-weight: 300;
+  color: var(--green);
+  letter-spacing: 0.06em;
+  white-space: nowrap;
+  min-width: 130px;
+}
+
+.training-name {
+  font-size: 0.92rem;
+  color: var(--dark);
+}
+
+/* ==========================================
+   お問い合わせ
+========================================== */
+.contact-lead {
+  font-size: 0.88rem;
+  color: var(--muted);
+  margin-bottom: 32px;
+}
+
+.contact-email {
+  display: inline-flex;
+  align-items: center;
+  gap: 14px;
+  padding: 22px 36px;
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--green);
+  font-size: 1rem;
+  color: var(--dark);
+  letter-spacing: 0.04em;
+  transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
+  text-decoration: none;
+}
+
+.contact-email:hover {
+  background: var(--green-pale, #EBF3E5);
+  border-color: var(--green);
+  box-shadow: 0 3px 12px rgba(90,139,58,0.12);
+}
+
+.contact-email-icon {
+  font-size: 1.1rem;
+  color: var(--green);
+}
+
+/* ==========================================
+   フッター
+========================================== */
+.footer {
+  background: var(--green);
+  color: rgba(255,255,255,0.65);
+  text-align: center;
+  padding: 30px 24px;
+  font-family: var(--en);
+  font-size: 0.73rem;
+  letter-spacing: 0.12em;
+}
+
+/* ==========================================
+   RESPONSIVE — 768px
+========================================== */
+@media (max-width: 768px) {
+  :root { --sec-py: 56px; }
+
+  /* ── ナビ ── */
+  .nav { padding: 0 20px; }
+
+  .nav-menu {
+    display: none;
+    position: fixed;
+    inset: 60px 0 0;
+    background: #1A3614;
+    align-items: center;
+    justify-content: center;
+    z-index: 800;
+  }
+
+  .nav-menu.is-open {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .nav-menu ul {
+    flex-direction: column;
+    align-items: center;
+    gap: 28px;
+  }
+
+  .nav-menu a {
+    font-size: 1.05rem;
+    letter-spacing: 0.2em;
+    color: rgba(255,255,255,0.9);
+  }
+
+  .hamburger { display: flex; }
+  .nav-sns   { display: none; }
+
+  /* ── ヒーロー ── */
+  .hero {
+    grid-template-columns: 1fr;
+    grid-template-rows: 58svh auto;
+    min-height: unset;
+  }
+
+  .hero-photo-side { order: -1; }
+  .hero-text-side  { border-right: none; }
+
+  .hero-name-body {
+    padding: 28px 24px 32px;
+  }
+
+  .hero-label {
+    font-size: 0.72rem;
+    margin-bottom: 12px;
+  }
+
+  .hero-name-ja {
+    font-size: clamp(2rem, 9vw, 2.8rem);
+    white-space: nowrap;
+  }
+
+  .hero-accent-line { margin-top: 14px; }
+
+  /* ── プロフィール ── */
+  .profile-wrap {
+    grid-template-columns: 1fr;
+    gap: 36px;
+  }
+
+  /* ── 経歴タブ ── */
+  .tab-btn { padding: 12px 18px; font-size: 0.82rem; }
+
+  .video-cats {
+    grid-template-columns: 1fr;
+    gap: 28px;
+  }
+
+  /* ── 研修歴 ── */
+  .training-list li {
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  /* ── ギャラリー ── */
+  .gallery-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 4px;
+  }
+
+  /* ── SNS：モバイルは縦並び ── */
+  .sns-list {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .sns-link { min-width: unset; }
+}
+
+/* ==========================================
+   RESPONSIVE — 480px
+========================================== */
+@media (max-width: 480px) {
+  :root { --sec-py: 48px; }
+
+  .nav { padding: 0 16px; }
+
+  .section-ttl { font-size: 1.2rem; }
+
+  .hero { grid-template-rows: 52svh auto; }
+
+  .hero-name-ja { font-size: clamp(1.8rem, 10vw, 2.4rem); }
+
+  .gallery-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 3px;
+  }
+
+  .tab-btn {
+    padding: 10px 14px;
+    font-size: 0.78rem;
+  }
+
+  .contact-email {
+    padding: 18px 20px;
+    font-size: 0.82rem;
+  }
+}
